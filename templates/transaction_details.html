@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Details - FraudGuard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Copy all CSS variables and base styles from admin_dashboard.html */
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #2563eb;
+            --accent-color: #3b82f6;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(30, 58, 138, 0.1);
+            --hover-color: #f1f5f9;
+            --input-background: #ffffff;
+            --input-border: #cbd5e1;
+            --table-header: #f1f5f9;
+            --table-row-hover: #f8fafc;
+            --status-badge-bg: #f1f5f9;
+            --status-badge-text: #1e293b;
+            --status-completed-bg: #dcfce7;
+            --status-completed-text: #059669;
+            --status-pending-bg: #fef3c7;
+            --status-pending-text: #d97706;
+            --status-failed-bg: #fee2e2;
+            --status-failed-text: #dc2626;
+            --card-icon-bg: #eff6ff;
+            --card-icon-color: #1e3a8a;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #1e293b;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #f1f5f9;
+            --text-light: #94a3b8;
+            --background-color: #0f172a;
+            --card-background: #1e293b;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --hover-color: #334155;
+            --input-background: #1e293b;
+            --input-border: #334155;
+            --table-header: #1e293b;
+            --table-row-hover: #334155;
+            --status-badge-bg: #1e293b;
+            --status-badge-text: #f1f5f9;
+            --status-completed-bg: #064e3b;
+            --status-completed-text: #6ee7b7;
+            --status-pending-bg: #92400e;
+            --status-pending-text: #fcd34d;
+            --status-failed-bg: #991b1b;
+            --status-failed-text: #fecaca;
+            --card-icon-bg: #1e3a8a;
+            --card-icon-color: #60a5fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 3.2rem;
+        }
+
+        .container {
+            max-width: 4000px;
+            margin: 25rem auto 15rem;
+            padding: 0 12rem;
+            background: var(--background-color);
+            border-radius: 60px;
+            box-shadow: 0 12px 35px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 4rem 8rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 3200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-title {
+            font-size: 5.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            color: #ffffff;
+        }
+
+        .navbar-title i {
+            font-size: 5.8rem;
+            color: var(--accent-color);
+        }
+
+        .transaction-details {
+            background: var(--card-background);
+            border-radius: 30px;
+            padding: 4rem;
+            margin-top: 4rem;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .transaction-details h3 {
+            font-size: 3.6rem;
+            color: var(--accent-color);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .transaction-details h3 i {
+            font-size: 3.2rem;
+            color: var(--accent-color);
+        }
+
+        .transaction-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .transaction-details li {
+            font-size: 3.2rem;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--background-color);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .transaction-details li i {
+            font-size: 2.8rem;
+            color: var(--accent-color);
+            width: 4rem;
+            text-align: center;
+        }
+
+        .transaction-details li span {
+            flex: 1;
+        }
+
+        .explanation-section {
+            background: var(--card-background);
+            border-radius: 30px;
+            padding: 4rem;
+            margin-top: 4rem;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .explanation-section h3 {
+            font-size: 3.6rem;
+            color: var(--accent-color);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .explanation-section h3 i {
+            font-size: 3.2rem;
+            color: var(--accent-color);
+        }
+
+        .explanation-content {
+            font-size: 3.2rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .details-section {
+            background: var(--card-background);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .details-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 1.4rem;
+        }
+
+        .detail-value {
+            color: var(--text-color);
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+
+        .explanation-section {
+            background: var(--card-background);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .explanation-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .explanation-content {
+            color: var(--text-color);
+            font-size: 1.6rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-title">
+                <i class="fas fa-shield-alt"></i>
+                <span>Transaction Details</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <a href="{{ url_for('admin_dashboard') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
+        </a>
+
+        <div class="details-section">
+            <h3>Transaction Details</h3>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Transaction ID</span>
+                    <span class="detail-value">#{{ transaction.transaction_id }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Sender Account</span>
+                    <span class="detail-value">{{ transaction.user }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Receiver Account</span>
+                    <span class="detail-value">{{ transaction.recipient }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Amount</span>
+                    <span class="detail-value">{{ transaction.amount }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Payment Type</span>
+                    <span class="detail-value">{{ transaction.payment_type }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value">{{ transaction.date }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status</span>
+                    <span class="detail-value">
+                        <span class="status-badge {% if transaction.status == 'Completed' %}status-completed{% else %}status-failed{% endif %}">
+                            <i class="fas {% if transaction.status == 'Completed' %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+                            <span>{{ transaction.status }}</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Laundering Type</span>
+                    <span class="detail-value">{{ transaction.laundering_type }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Sender Info</span>
+                    <span class="detail-value">{{ transaction.sender_info }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Receiver Info</span>
+                    <span class="detail-value">{{ transaction.receiver_info }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation-section">
+            <h3>AI Analysis</h3>
+            <div class="explanation-content">
+                {{ transaction.explanation }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+    </script>
+</body>
+</html> 

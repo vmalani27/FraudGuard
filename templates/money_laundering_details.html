@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Laundering Transaction Details - FraudGuard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #2563eb;
+            --accent-color: #3b82f6;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(30, 58, 138, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #1e293b;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #f1f5f9;
+            --text-light: #94a3b8;
+            --background-color: #0f172a;
+            --card-background: #1e293b;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 100px auto 50px;
+            padding: 0 40px;
+            width: 100%;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 1rem 2rem;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            transition: background-color 0.3s ease;
+            font-size: 2.4rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .transaction-card {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 3rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .transaction-id {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .transaction-status {
+            padding: 1rem 2rem;
+            border-radius: 4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2.4rem;
+        }
+
+        .status-completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .status-failed {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        .detail-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            background: var(--card-background);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 2.4rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            font-size: 3.2rem;
+        }
+
+        .laundering-type {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .explanation-section {
+            background: var(--card-background);
+            border-radius: 30px;
+            padding: 4rem;
+            margin-top: 4rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            width: 100%;
+        }
+
+        .explanation-section h3 {
+            font-size: 4rem;
+            color: var(--text-color);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .explanation-section h3 i {
+            color: var(--accent-color);
+        }
+
+        .explanation-content {
+            font-size: 3.2rem;
+            color: var(--text-color);
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .explanation-loading {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            font-size: 3.2rem;
+            color: var(--text-light);
+        }
+
+        .explanation-loading i {
+            font-size: 3.2rem;
+            color: var(--accent-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .participant-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .participant-card {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            width: 100%;
+        }
+
+        .participant-title {
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            font-size: 2.8rem;
+        }
+
+        .participant-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .transaction-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .transaction-card {
+                padding: 2rem;
+            }
+
+            .detail-group {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-title">
+                <i class="fas fa-shield-alt"></i>
+                <span>FraudGuard</span>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="transaction-card">
+            <div class="transaction-header">
+                <div class="transaction-id">Transaction #{{ transaction.transaction_id }}</div>
+                <div class="transaction-status {% if transaction.status == 'Completed' %}status-completed{% else %}status-failed{% endif %}">
+                    <i class="fas {% if transaction.status == 'Completed' %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+                    {{ transaction.status }}
+                </div>
+            </div>
+
+            <div class="transaction-details">
+                <div class="detail-group">
+                    <span class="detail-label">Amount</span>
+                    <span class="detail-value">{{ transaction.amount }}</span>
+                </div>
+                <div class="detail-group">
+                    <span class="detail-label">Payment Type</span>
+                    <span class="detail-value">{{ transaction.payment_type }}</span>
+                </div>
+                <div class="detail-group">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value">{{ transaction.date }}</span>
+                </div>
+                <div class="detail-group">
+                    <span class="detail-label">Laundering Type</span>
+                    <span class="detail-value">{{ transaction.laundering_type }}</span>
+                </div>
+            </div>
+
+            <div class="participant-info">
+                <div class="participant-card">
+                    <div class="participant-title">Sender Information</div>
+                    <div class="participant-details">
+                        <div class="detail-group">
+                            <span class="detail-label">Account</span>
+                            <span class="detail-value">{{ transaction.user }}</span>
+                        </div>
+                        <div class="detail-group">
+                            <span class="detail-label">Details</span>
+                            <span class="detail-value">{{ transaction.sender_info }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="participant-card">
+                    <div class="participant-title">Receiver Information</div>
+                    <div class="participant-details">
+                        <div class="detail-group">
+                            <span class="detail-label">Account</span>
+                            <span class="detail-value">{{ transaction.recipient }}</span>
+                        </div>
+                        <div class="detail-group">
+                            <span class="detail-label">Details</span>
+                            <span class="detail-value">{{ transaction.receiver_info }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="explanation-section">
+            <h3>
+                <i class="fas fa-lightbulb"></i>
+                <span class="translate" data-en="AI Analysis" data-hi="एआई विश्लेषण" data-gu="એઆઈ વિશ્લેષણ">AI Analysis</span>
+            </h3>
+            <div class="explanation-content" id="explanationContent">
+                {% if transaction.explanation %}
+                    {{ transaction.explanation }}
+                {% else %}
+                    <div class="explanation-loading">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span class="translate" data-en="No analysis available" data-hi="कोई विश्लेषण उपलब्ध नहीं" data-gu="કોઈ વિશ્લેષણ ઉપલબ્ધ નથી">No analysis available</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+    </script>
+</body>
+</html> 

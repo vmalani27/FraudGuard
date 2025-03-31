@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - FraudGuard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #2563eb;
+            --accent-color: #3b82f6;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(30, 58, 138, 0.1);
+            --hover-color: #f1f5f9;
+            --input-background: #ffffff;
+            --input-border: #cbd5e1;
+            --button-bg: #2563eb;
+            --button-hover: #1d4ed8;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #1e293b;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #f1f5f9;
+            --text-light: #94a3b8;
+            --background-color: #0f172a;
+            --card-background: #1e293b;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --hover-color: #334155;
+            --input-background: #1e293b;
+            --input-border: #334155;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 3.2rem;
+        }
+
+        .container {
+            max-width: 3600px;
+            margin: 0 auto;
+            padding: 0 10rem;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 4rem 8rem;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--accent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+        }
+
+        .navbar-content {
+            max-width: 3200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-title {
+            font-size: 5.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+
+        .navbar-title i {
+            font-size: 5.8rem;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 3.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 1.5rem 3rem;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            background: var(--accent-color);
+            border: none;
+            padding: 1.5rem 3rem;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 3.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 2rem;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .language-selector select:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .language-selector select option {
+            background: var(--card-background);
+            color: var(--text-color);
+            font-size: 3.2rem;
+            padding: 1.5rem;
+        }
+
+        .theme-toggle {
+            background: var(--accent-color);
+            border: none;
+            padding: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 2.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .theme-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .main-content {
+            max-width: 3600px;
+            margin: 20rem auto 12rem;
+            padding: 0 10rem;
+        }
+
+        .contact-section {
+            background: var(--card-background);
+            border-radius: 60px;
+            padding: 11rem;
+            margin-bottom: 11rem;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 8rem;
+        }
+
+        .contact-header h1 {
+            font-size: 6rem;
+            color: var(--text-color);
+            font-weight: 800;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+
+        .contact-header p {
+            color: var(--text-light);
+            font-size: 3.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding: 3rem;
+            background: var(--hover-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+
+        .contact-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--accent-color);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.8rem;
+        }
+
+        .contact-details h3 {
+            font-size: 3.2rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .contact-details p {
+            color: var(--text-light);
+            font-size: 2.8rem;
+        }
+
+        .contact-form {
+            background: var(--hover-color);
+            padding: 6rem;
+            border-radius: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 4rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 3.2rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 3rem;
+            border: 2px solid var(--input-border);
+            border-radius: 20px;
+            background: var(--input-background);
+            color: var(--text-color);
+            font-size: 3.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.2);
+        }
+
+        .form-group textarea {
+            height: 200px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 3rem 6rem;
+            border-radius: 25px;
+            font-size: 3.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 8rem;
+            background: var(--primary-color);
+            margin-top: 12rem;
+            font-size: 3.2rem;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 4rem;
+            }
+
+            .navbar {
+                padding: 3rem 4rem;
+            }
+
+            .navbar-title {
+                font-size: 4.2rem;
+            }
+
+            .navbar-title i {
+                font-size: 4.5rem;
+            }
+
+            .nav-links a {
+                font-size: 2.8rem;
+            }
+
+            .main-content {
+                margin-top: 18rem;
+                padding: 0 4rem;
+            }
+
+            .contact-section {
+                padding: 6rem;
+            }
+
+            .contact-header h1 {
+                font-size: 4.8rem;
+            }
+
+            .contact-header p {
+                font-size: 2.8rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .contact-form {
+                padding: 4rem;
+            }
+
+            .form-group label {
+                font-size: 2.8rem;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                font-size: 2.8rem;
+                padding: 2rem;
+            }
+
+            .submit-btn {
+                font-size: 2.8rem;
+                padding: 2rem 4rem;
+            }
+
+            .footer {
+                padding: 5rem;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-title">
+                <i class="fas fa-shield-alt"></i>
+                <span class="translate" data-en="FraudGuard" data-hi="फ्रॉडगार्ड" data-gu="ફ્રોડગાર્ડ">FraudGuard</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="translate" data-en="Home" data-hi="होम" data-gu="હોમ">Home</a>
+                <a href="#" class="translate" data-en="About" data-hi="हमारे बारे में" data-gu="અમારા વિશે">About</a>
+                <a href="/contact" class="translate" data-en="Contact" data-hi="संपर्क" data-gu="સંપર્ક">Contact</a>
+                <div class="language-selector">
+                    <select id="languageSelect" onchange="changeLanguage()">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                    </select>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="contact-section">
+            <div class="contact-header">
+                <h1 class="translate" data-en="Contact Us" data-hi="हमसे संपर्क करें" data-gu="અમારો સંપર્ક કરો">Contact Us</h1>
+                <p class="translate" data-en="Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible." data-hi="प्रश्न हैं? हम आपसे सुनना चाहेंगे। हमें संदेश भेजें और हम जल्द से जल्द जवाब देंगे।" data-gu="પ્રશ્નો છે? અમે તમારી પાસેથી સાંભળવા માંગીએ છીએ. અમને સંદેશ મોકલો અને અમે જલદી જવાબ આપીશું.">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 class="translate" data-en="Address" data-hi="पता" data-gu="સરનામું">Address</h3>
+                            <p class="translate" data-en="123 Security Street, Cyber City, 12345" data-hi="123 सुरक्षा स्ट्रीट, साइबर सिटी, 12345" data-gu="123 સુરક્ષા સ્ટ્રીટ, સાઇબર સિટી, 12345">123 Security Street, Cyber City, 12345</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 class="translate" data-en="Phone" data-hi="फ़ोन" data-gu="ફોન">Phone</h3>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3 class="translate" data-en="Email" data-hi="ईमेल" data-gu="ઈમેઇલ">Email</h3>
+                            <p>support@fraudguard.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" action="/contact" method="post">
+                    <div class="form-group">
+                        <label class="translate" data-en="Name" data-hi="नाम" data-gu="નામ">Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Email" data-hi="ईमेल" data-gu="ઈમેઇલ">Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Subject" data-hi="विषय" data-gu="વિષય">Subject</label>
+                        <input type="text" name="subject" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Message" data-hi="संदेश" data-gu="સંદેશ">Message</label>
+                        <textarea name="message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span class="translate" data-en="Send Message" data-hi="संदेश भेजें" data-gu="સંદેશ મોકલો">Send Message</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 <span class="translate" data-en="FraudGuard. All rights reserved." data-hi="फ्रॉडगार्ड. सर्वाधिकार सुरक्षित।" data-gu="ફ્રોડગાર્ડ. બધા અધિકારો આરક્ષિત.">FraudGuard. All rights reserved.</span></p>
+    </footer>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // User Collection Schema
+        const userSchema = {
+            firstName: '',
+            lastName: '',
+            dateOfBirth: '',
+            email: '',
+            phone: '',
+            address: '',
+            createdAt: new Date(),
+            lastLogin: new Date(),
+            status: 'active'
+        };
+
+        // Admin Collection Schema
+        const adminSchema = {
+            firstName: '',
+            lastName: '',
+            dateOfBirth: '',
+            email: '',
+            phone: '',
+            role: 'admin',
+            createdAt: new Date(),
+            lastLogin: new Date(),
+            status: 'active'
+        };
+
+        // Function to add a new user
+        async function addUser(userData) {
+            try {
+                const userRef = await db.collection('users').add({
+                    ...userSchema,
+                    ...userData,
+                    createdAt: new Date(),
+                    lastLogin: new Date()
+                });
+                return { success: true, userId: userRef.id };
+            } catch (error) {
+                console.error('Error adding user:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Function to add a new admin
+        async function addAdmin(adminData) {
+            try {
+                const adminRef = await db.collection('admin').add({
+                    ...adminSchema,
+                    ...adminData,
+                    createdAt: new Date(),
+                    lastLogin: new Date()
+                });
+                return { success: true, adminId: adminRef.id };
+            } catch (error) {
+                console.error('Error adding admin:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Function to get user by ID
+        async function getUser(userId) {
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    return { success: true, user: userDoc.data() };
+                }
+                return { success: false, error: 'User not found' };
+            } catch (error) {
+                console.error('Error getting user:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Function to get admin by ID
+        async function getAdmin(adminId) {
+            try {
+                const adminDoc = await db.collection('admin').doc(adminId).get();
+                if (adminDoc.exists) {
+                    return { success: true, admin: adminDoc.data() };
+                }
+                return { success: false, error: 'Admin not found' };
+            } catch (error) {
+                console.error('Error getting admin:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Function to update user
+        async function updateUser(userId, updateData) {
+            try {
+                await db.collection('users').doc(userId).update({
+                    ...updateData,
+                    lastLogin: new Date()
+                });
+                return { success: true };
+            } catch (error) {
+                console.error('Error updating user:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Function to update admin
+        async function updateAdmin(adminId, updateData) {
+            try {
+                await db.collection('admin').doc(adminId).update({
+                    ...updateData,
+                    lastLogin: new Date()
+                });
+                return { success: true };
+            } catch (error) {
+                console.error('Error updating admin:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Example usage for user registration
+        async function registerUser(event) {
+            event.preventDefault();
+            
+            const userData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value
+            };
+
+            const result = await addUser(userData);
+            if (result.success) {
+                alert('User registered successfully!');
+                event.target.reset();
+            } else {
+                alert('Error registering user: ' + result.error);
+            }
+        }
+
+        // Example usage for admin creation
+        async function createAdmin(event) {
+            event.preventDefault();
+            
+            const adminData = {
+                firstName: document.getElementById('adminFirstName').value,
+                lastName: document.getElementById('adminLastName').value,
+                dateOfBirth: document.getElementById('adminDateOfBirth').value,
+                email: document.getElementById('adminEmail').value,
+                phone: document.getElementById('adminPhone').value
+            };
+
+            const result = await addAdmin(adminData);
+            if (result.success) {
+                alert('Admin created successfully!');
+                event.target.reset();
+            } else {
+                alert('Error creating admin: ' + result.error);
+            }
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        function changeLanguage() {
+            const language = document.getElementById('languageSelect').value;
+            document.querySelectorAll('.translate').forEach(element => {
+                const key = element.getAttribute(`data-${language}`);
+                if (key) {
+                    element.textContent = key;
+                }
+            });
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            document.getElementById('languageSelect').value = savedLanguage;
+            changeLanguage();
+        });
+
+        // Save language preference
+        document.getElementById('languageSelect').addEventListener('change', (e) => {
+            localStorage.setItem('language', e.target.value);
+        });
+
+        // Handle form submission
+        document.querySelector('.contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.querySelector('input[name="name"]').value;
+            const email = document.querySelector('input[name="email"]').value;
+            const subject = document.querySelector('input[name="subject"]').value;
+            const message = document.querySelector('textarea[name="message"]').value;
+            const timestamp = new Date();
+
+            try {
+                // Add message to Firestore
+                await db.collection('contact_messages').add({
+                    name,
+                    email,
+                    subject,
+                    message,
+                    timestamp
+                });
+
+                // Show success message
+                alert('Message sent successfully!');
+                // Clear form
+                e.target.reset();
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Error sending message. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

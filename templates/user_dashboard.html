@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - FraudGuard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #2563eb;
+            --accent-color: #3b82f6;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(30, 58, 138, 0.1);
+            --hover-color: #f1f5f9;
+            --input-background: #ffffff;
+            --input-border: #cbd5e1;
+            --table-header: #f1f5f9;
+            --table-row-hover: #f8fafc;
+            --status-badge-bg: #f1f5f9;
+            --status-badge-text: #1e293b;
+            --status-completed-bg: #dcfce7;
+            --status-completed-text: #059669;
+            --status-pending-bg: #fef3c7;
+            --status-pending-text: #d97706;
+            --status-failed-bg: #fee2e2;
+            --status-failed-text: #dc2626;
+            --card-icon-bg: #eff6ff;
+            --card-icon-color: #1e3a8a;
+            --submit-btn-bg: #2563eb;
+            --submit-btn-hover: #1d4ed8;
+            --language-selector-bg: #ffffff;
+            --language-selector-border: #cbd5e1;
+            --language-selector-hover: #f1f5f9;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #1e293b;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #f1f5f9;
+            --text-light: #94a3b8;
+            --background-color: #0f172a;
+            --card-background: #1e293b;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --hover-color: #334155;
+            --input-background: #1e293b;
+            --input-border: #334155;
+            --table-header: #1e293b;
+            --table-row-hover: #334155;
+            --status-badge-bg: #1e293b;
+            --status-badge-text: #f1f5f9;
+            --status-completed-bg: #064e3b;
+            --status-completed-text: #6ee7b7;
+            --status-pending-bg: #92400e;
+            --status-pending-text: #fcd34d;
+            --status-failed-bg: #991b1b;
+            --status-failed-text: #fecaca;
+            --card-icon-bg: #1e3a8a;
+            --card-icon-color: #60a5fa;
+            --submit-btn-bg: #3b82f6;
+            --submit-btn-hover: #2563eb;
+            --language-selector-bg: #1e293b;
+            --language-selector-border: #334155;
+            --language-selector-hover: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 3.2rem;
+        }
+
+        .container {
+            max-width: 3600px;
+            margin: 8rem auto 6rem;
+            padding: 0 6rem;
+            background: var(--background-color);
+            border-radius: 50px;
+            box-shadow: var(--shadow-color);
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 4rem 8rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .navbar-content {
+            max-width: 3200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-title {
+            font-size: 5.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+
+        .navbar-title i {
+            font-size: 5.8rem;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px var(--shadow-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            background: var(--language-selector-bg);
+            border: 2px solid var(--language-selector-border);
+            padding: 2rem 4rem;
+            color: var(--text-color);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 2.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 2rem;
+        }
+
+        .language-selector select:hover {
+            background: var(--language-selector-hover);
+            border-color: var(--accent-color);
+        }
+
+        .theme-toggle {
+            background: var(--accent-color);
+            border: none;
+            padding: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 2.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .theme-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .logout-btn {
+            background: var(--accent-color);
+            border: none;
+            padding: 2rem 4rem;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 2.8rem;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .dashboard {
+            max-width: 3400px;
+            margin: 0 auto;
+            padding: 0 4rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 4rem;
+            margin: 25rem 0 6rem;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: 40px;
+            padding: 4rem;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .card-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .card-icon {
+            width: 140px;
+            height: 140px;
+            background: var(--card-icon-bg);
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--card-icon-color);
+            font-size: 3.8rem;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card-value {
+            font-size: 7.5rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 3rem;
+        }
+
+        .card-label {
+            color: var(--text-light);
+            font-size: 3.2rem;
+        }
+
+        .transaction-form,
+        .transaction-section {
+            background: var(--card-background);
+            border-radius: 40px;
+            padding: 6rem;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            margin-bottom: 6rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .transaction-form h2 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 4rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group label {
+            font-size: 3.2rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 3rem;
+            border: 2px solid var(--input-border);
+            border-radius: 25px;
+            font-size: 3.2rem;
+            background: var(--input-background);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.2);
+        }
+
+        .submit-btn {
+            background: var(--submit-btn-bg);
+            color: white;
+            border: none;
+            padding: 3rem 6rem;
+            border-radius: 25px;
+            font-size: 3.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 4rem;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--submit-btn-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .transaction-section {
+            background: var(--card-background);
+            border-radius: 50px;
+            padding: 8rem;
+            box-shadow: var(--shadow-color);
+        }
+
+        .transaction-section h2 {
+            font-size: 4.8rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 4rem;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 2.5rem;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .transaction-table th {
+            background: var(--table-header);
+            padding: 3.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--border-color);
+            font-size: 3.2rem;
+        }
+
+        .transaction-table td {
+            padding: 3.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 3.2rem;
+            transition: background 0.3s ease;
+        }
+
+        .transaction-table tr:hover {
+            background: var(--table-row-hover);
+        }
+
+        .transaction-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 2rem 3.5rem;
+            border-radius: 50px;
+            font-size: 2.4rem;
+            font-weight: 500;
+            display: inline-block;
+            background: var(--status-badge-bg);
+            color: var(--status-badge-text);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            min-width: 180px;
+        }
+
+        .status-completed {
+            background: var(--status-completed-bg);
+            color: var(--status-completed-text);
+        }
+
+        .status-pending {
+            background: var(--status-pending-bg);
+            color: var(--status-pending-text);
+        }
+
+        .status-failed {
+            background: var(--status-failed-bg);
+            color: var(--status-failed-text);
+        }
+
+        .transaction-id,
+        .transaction-amount {
+            font-size: 3.2rem;
+            font-weight: 600;
+        }
+
+        .transaction-date {
+            color: var(--text-light);
+            font-size: 2.8rem;
+        }
+
+        .add-transaction-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 3rem 6rem;
+            border-radius: 25px;
+            font-size: 3.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px var(--shadow-color);
+        }
+
+        .add-transaction-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px var(--shadow-color);
+        }
+
+        .add-transaction-btn i {
+            font-size: 2.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 6rem auto 4rem;
+                padding: 0 3rem;
+                border-radius: 30px;
+            }
+
+            .navbar {
+                padding: 3rem 4rem;
+            }
+
+            .navbar-title {
+                font-size: 4.2rem;
+            }
+
+            .navbar-title i {
+                font-size: 4.5rem;
+            }
+
+            .dashboard {
+                padding: 0 2rem;
+            }
+
+            .card {
+                padding: 3rem;
+            }
+
+            .card-title {
+                font-size: 3.2rem;
+            }
+
+            .card-value {
+                font-size: 5rem;
+            }
+
+            .card-label {
+                font-size: 2.4rem;
+            }
+
+            .transaction-form,
+            .transaction-section {
+                padding: 4rem;
+            }
+
+            .transaction-form h2,
+            .transaction-section h2 {
+                font-size: 3.2rem;
+            }
+
+            .form-group label {
+                font-size: 2.4rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 2.4rem;
+                padding: 2rem;
+            }
+
+            .submit-btn {
+                font-size: 2.4rem;
+                padding: 2rem 4rem;
+            }
+
+            .transaction-table th,
+            .transaction-table td {
+                padding: 2rem;
+                font-size: 2.2rem;
+            }
+
+            .status-badge {
+                padding: 1.5rem 3rem;
+                font-size: 2rem;
+                min-width: 160px;
+            }
+
+            .transaction-id,
+            .transaction-amount {
+                font-size: 2.2rem;
+            }
+
+            .transaction-date {
+                font-size: 2rem;
+            }
+
+            .add-transaction-btn {
+                padding: 2rem 4rem;
+                font-size: 2.4rem;
+            }
+
+            .add-transaction-btn i {
+                font-size: 2.4rem;
+            }
+
+            .dashboard-grid {
+                margin: 20rem 0 4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 4rem auto 3rem;
+                padding: 0 2rem;
+                border-radius: 25px;
+            }
+
+            .dashboard {
+                padding: 0 1.5rem;
+            }
+
+            .dashboard-grid {
+                margin: 15rem 0 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="navbar-content">
+                <div class="navbar-title">
+                    <i class="fas fa-user-shield"></i>
+                    <span class="translate" data-en="FraudGuard User" data-hi="फ्रॉडगार्ड उपयोगकर्ता" data-gu="ફ્રોડગાર્ડ વપરાશકર્તા">FraudGuard User</span>
+                </div>
+                <div class="nav-actions">
+                    <div class="language-selector">
+                        <select id="languageSelect" onchange="changeLanguage()">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="gu">ગુજરાતી</option>
+                        </select>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="{{ url_for('onboarding') }}" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="translate" data-en="Logout" data-hi="लॉग आउट" data-gu="લૉગ આઉટ">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title translate" data-en="Account Balance" data-hi="खाता शेष" data-gu="એકાઉન્ટ બેલેન્સ">Account Balance</h3>
+                        <div class="card-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">$25,000.00</div>
+                    <div class="card-label translate" data-en="Current Balance" data-hi="वर्तमान शेष" data-gu="વર્તમાન બેલેન્સ">Current Balance</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title translate" data-en="Total Transactions" data-hi="कुल लेन-देन" data-gu="કુલ વ્યવહારો">Total Transactions</h3>
+                        <div class="card-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">156</div>
+                    <div class="card-label translate" data-en="Last 30 days" data-hi="पिछले 30 दिन" data-gu="છેલ્લા 30 દિવસ">Last 30 days</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title translate" data-en="Success Rate" data-hi="सफलता दर" data-gu="સફળતા દર">Success Rate</h3>
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">98.1%</div>
+                    <div class="card-label translate" data-en="Last 30 days" data-hi="पिछले 30 दिन" data-gu="છેલ્લા 30 દિવસ">Last 30 days</div>
+                </div>
+            </div>
+
+            <div class="transaction-section">
+                <div class="section-header">
+                    <h2 class="translate" data-en="Add New Transaction" data-hi="नया लेन-देन जोड़ें" data-gu="નવો વ્યવહાર ઉમેરો">Add New Transaction</h2>
+                    <button class="add-transaction-btn" onclick="showTransactionForm()">
+                        <i class="fas fa-plus"></i>
+                        <span class="translate" data-en="Add Transaction" data-hi="लेन-देन जोड़ें" data-gu="વ્યવહાર ઉમેરો">Add Transaction</span>
+                    </button>
+                </div>
+
+                <form id="transactionForm" class="transaction-form" style="display: none;">
+                    <div class="form-group">
+                        <label class="translate" data-en="Transaction Category" data-hi="लेन-देन श्रेणी" data-gu="વ્યવહાર શ્રેણી">Transaction Category</label>
+                        <select id="transactionCategory" onchange="updateFormFields()">
+                            <option value="credit_card" class="translate" data-en="Credit Card" data-hi="क्रेडिट कार्ड" data-gu="ક્રેડિટ કાર્ડ">Credit Card</option>
+                            <option value="bank" class="translate" data-en="Bank Transfer" data-hi="बैंक ट्रांसफर" data-gu="બેંક ટ્રાન્સફર">Bank Transfer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Transaction Amount" data-hi="लेन-देन राशि" data-gu="વ્યવહાર રકમ">Transaction Amount</label>
+                        <input type="number" step="0.01" name="amount" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Currency" data-hi="मुद्रा" data-gu="ચલણ">Currency</label>
+                        <select name="currency" required>
+                            <option value="GBP">UK pounds</option>
+                            <option value="AED">Dirham</option>
+                            <option value="PKR">Pakistani rupee</option>
+                            <option value="EUR">Euro</option>
+                            <option value="USD">US dollar</option>
+                            <option value="MXN">Mexican Peso</option>
+                            <option value="INR">Indian rupee</option>
+                            <option value="ALL">Albanian lek</option>
+                            <option value="TRY">Turkish lira</option>
+                            <option value="NGN">Naira</option>
+                            <option value="CHF">Swiss franc</option>
+                            <option value="JPY">Yen</option>
+                            <option value="MAD">Moroccan dirham</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Payment Type" data-hi="भुगतान प्रकार" data-gu="ચુકવણી પ્રકાર">Payment Type</label>
+                        <select name="paymentType" required>
+                            <option value="Cash Deposit">Cash Deposit</option>
+                            <option value="Cross-border">Cross-border</option>
+                            <option value="Cheque">Cheque</option>
+                            <option value="ACH">ACH</option>
+                            <option value="Credit card">Credit card</option>
+                            <option value="Debit card">Debit card</option>
+                            <option value="Cash Withdrawal">Cash Withdrawal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="translate" data-en="Description" data-hi="विवरण" data-gu="વર્ણન">Description</label>
+                        <textarea name="description" required></textarea>
+                    </div>
+
+                    <div id="creditCardFields" class="form-group">
+                        <label class="translate" data-en="Card Type" data-hi="कार्ड प्रकार" data-gu="કાર્ડ પ્રકાર">Card Type</label>
+                        <select name="cardType">
+                            <option value="visa" class="translate" data-en="Visa" data-hi="वीजा" data-gu="વિઝા">Visa</option>
+                            <option value="mastercard" class="translate" data-en="Mastercard" data-hi="मास्टरकार्ड" data-gu="માસ્ટરકાર્ડ">Mastercard</option>
+                            <option value="amex" class="translate" data-en="American Express" data-hi="अमेरिकन एक्सप्रेस" data-gu="અમેરિકન એક્સપ્રેસ">American Express</option>
+                        </select>
+                        <label class="translate" data-en="Card Number (Last 4 digits)" data-hi="कार्ड नंबर (अंतिम 4 अंक)" data-gu="કાર્ડ નંબર (છેલ્લા 4 અંક)">Card Number (Last 4 digits)</label>
+                        <input type="text" maxlength="4" pattern="[0-9]{4}" name="cardNumber">
+                        <label class="translate" data-en="Merchant Name" data-hi="व्यापारी का नाम" data-gu="વેપારીનું નામ">Merchant Name</label>
+                        <input type="text" name="merchantName">
+                    </div>
+
+                    <div id="bankFields" class="form-group" style="display: none;">
+                        <label class="translate" data-en="Sender Account Number" data-hi="भेजने वाले का खाता नंबर" data-gu="મોકલનારનો એકાઉન્ટ નંબર">Sender Account Number</label>
+                        <input type="text" name="senderAccount" required>
+                        
+                        <label class="translate" data-en="Sender Bank Location" data-hi="भेजने वाले का बैंक स्थान" data-gu="મોકલનારનું બેંક સ્થાન">Sender Bank Location</label>
+                        <select name="senderBankLocation" required>
+                            <option value="UK">UK</option>
+                            <option value="UAE">UAE</option>
+                            <option value="Spain">Spain</option>
+                            <option value="France">France</option>
+                            <option value="USA">USA</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="India">India</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Japan">Japan</option>
+                        </select>
+                        
+                        <label class="translate" data-en="Receiver Account Number" data-hi="प्राप्तकर्ता का खाता नंबर" data-gu="પ્રાપ્તકર્તાનો એકાઉન્ટ નંબર">Receiver Account Number</label>
+                        <input type="text" name="receiverAccount" required>
+                        
+                        <label class="translate" data-en="Receiver Bank Location" data-hi="प्राप्तकर्ता का बैंक स्थान" data-gu="પ્રાપ્તકર્તાનું બેંક સ્થાન">Receiver Bank Location</label>
+                        <select name="receiverBankLocation" required>
+                            <option value="UK">UK</option>
+                            <option value="UAE">UAE</option>
+                            <option value="Spain">Spain</option>
+                            <option value="France">France</option>
+                            <option value="USA">USA</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="India">India</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Japan">Japan</option>
+                        </select>
+                        
+                        <label class="translate" data-en="Receiver Currency" data-hi="प्राप्तकर्ता की मुद्रा" data-gu="પ્રાપ્તકર્તાની ચલણ">Receiver Currency</label>
+                        <select name="receiverCurrency" required>
+                            <option value="GBP">UK pounds</option>
+                            <option value="AED">Dirham</option>
+                            <option value="PKR">Pakistani rupee</option>
+                            <option value="EUR">Euro</option>
+                            <option value="USD">US dollar</option>
+                            <option value="MXN">Mexican Peso</option>
+                            <option value="INR">Indian rupee</option>
+                            <option value="ALL">Albanian lek</option>
+                            <option value="TRY">Turkish lira</option>
+                            <option value="NGN">Naira</option>
+                            <option value="CHF">Swiss franc</option>
+                            <option value="JPY">Yen</option>
+                            <option value="MAD">Moroccan dirham</option>
+                        </select>
+                        
+                        <label class="translate" data-en="Bank Name" data-hi="बैंक का नाम" data-gu="બેંકનું નામ">Bank Name</label>
+                        <input type="text" name="bankName" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check"></i>
+                        <span class="translate" data-en="Submit Transaction" data-hi="लेन-देन जमा करें" data-gu="વ્યવહાર સબમિટ કરો">Submit Transaction</span>
+                    </button>
+                </form>
+
+                <div class="transaction-history">
+                    <h2 class="translate" data-en="Transaction History" data-hi="लेन-देन इतिहास" data-gu="વ્યવહાર ઇતિહાસ">Transaction History</h2>
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th class="translate" data-en="Date" data-hi="तिथि" data-gu="તારીખ">Date</th>
+                                <th class="translate" data-en="Category" data-hi="श्रेणी" data-gu="શ્રેણી">Category</th>
+                                <th class="translate" data-en="Amount" data-hi="राशि" data-gu="રકમ">Amount</th>
+                                <th class="translate" data-en="Description" data-hi="विवरण" data-gu="વર્ણન">Description</th>
+                                <th class="translate" data-en="Status" data-hi="स्थिति" data-gu="સ્થિતિ">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-02-20 14:30</td>
+                                <td>Credit Card</td>
+                                <td>$250.00</td>
+                                <td>Online Purchase</td>
+                                <td><span class="status-badge status-completed translate" data-en="Completed" data-hi="पूर्ण" data-gu="પૂર્ણ">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2024-02-19 16:45</td>
+                                <td>Bank Transfer</td>
+                                <td>$1,500.00</td>
+                                <td>Monthly Rent</td>
+                                <td><span class="status-badge status-completed translate" data-en="Completed" data-hi="पूर्ण" data-gu="પૂર્ણ">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        function showTransactionForm() {
+            const form = document.getElementById('transactionForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateFormFields() {
+            const category = document.getElementById('transactionCategory').value;
+            const creditCardFields = document.getElementById('creditCardFields');
+            const bankFields = document.getElementById('bankFields');
+
+            if (category === 'credit_card') {
+                creditCardFields.style.display = 'block';
+                bankFields.style.display = 'none';
+            } else {
+                creditCardFields.style.display = 'none';
+                bankFields.style.display = 'block';
+            }
+        }
+
+        // Initialize form fields
+        updateFormFields();
+
+        const translations = {
+            en: {
+                // Common
+                "Add New Transaction": "Add New Transaction",
+                "Transaction Category": "Transaction Category",
+                "Select Transaction Category": "Select Transaction Category",
+                "Credit/Debit Card": "Credit/Debit Card",
+                "Bank Transfer": "Bank Transfer",
+                "Cheque": "Cheque",
+                "Cash": "Cash",
+                "Transaction Amount": "Transaction Amount",
+                "Transaction Date": "Transaction Date",
+                "Description": "Description",
+                "Card Type": "Card Type",
+                "Card Number (Last 4 digits)": "Card Number (Last 4 digits)",
+                "Merchant Name": "Merchant Name",
+                "Sender Account Number": "Sender Account Number",
+                "Receiver Account Number": "Receiver Account Number",
+                "Bank Name": "Bank Name",
+                "Cheque Number": "Cheque Number",
+                "Account Number": "Account Number",
+                "Transaction Location": "Transaction Location",
+                "Transaction Type": "Transaction Type",
+                "Deposit": "Deposit",
+                "Withdrawal": "Withdrawal",
+                "Add Transaction": "Add Transaction",
+                "Recent Activities": "Recent Activities",
+                "Activity ID": "Activity ID",
+                "Activity Type": "Activity Type",
+                "Duration": "Duration",
+                "Date": "Date",
+                "Status": "Status",
+                "Completed": "Completed",
+                "In Progress": "In Progress",
+                "Account Balance": "Account Balance",
+                "Current Balance": "Current Balance",
+                "Total Transactions": "Total Transactions",
+                "Last 30 days": "Last 30 days",
+                "Success Rate": "Success Rate"
+            },
+            hi: {
+                // Common
+                "Add New Transaction": "नया लेन-देन जोड़ें",
+                "Transaction Category": "लेन-देन श्रेणी",
+                "Select Transaction Category": "लेन-देन श्रेणी चुनें",
+                "Credit/Debit Card": "क्रेडिट/डेबिट कार्ड",
+                "Bank Transfer": "बैंक ट्रांसफर",
+                "Cheque": "चेक",
+                "Cash": "नकद",
+                "Transaction Amount": "लेन-देन राशि",
+                "Transaction Date": "लेन-देन तिथि",
+                "Description": "विवरण",
+                "Card Type": "कार्ड प्रकार",
+                "Card Number (Last 4 digits)": "कार्ड नंबर (अंतिम 4 अंक)",
+                "Merchant Name": "व्यापारी का नाम",
+                "Sender Account Number": "प्रेषक खाता संख्या",
+                "Receiver Account Number": "प्राप्तकर्ता खाता संख्या",
+                "Bank Name": "बैंक का नाम",
+                "Cheque Number": "चेक नंबर",
+                "Account Number": "खाता संख्या",
+                "Transaction Location": "लेन-देन स्थान",
+                "Transaction Type": "लेन-देन प्रकार",
+                "Deposit": "जमा",
+                "Withdrawal": "निकासी",
+                "Add Transaction": "लेन-देन जोड़ें",
+                "Recent Activities": "हाल की गतिविधियां",
+                "Activity ID": "गतिविधि आईडी",
+                "Activity Type": "गतिविधि प्रकार",
+                "Duration": "अवधि",
+                "Date": "तिथि",
+                "Status": "स्थिति",
+                "Completed": "पूर्ण",
+                "In Progress": "प्रगति पर",
+                "Account Balance": "खाता शेष",
+                "Current Balance": "वर्तमान शेष",
+                "Total Transactions": "कुल लेन-देन",
+                "Last 30 days": "पिछले 30 दिन",
+                "Success Rate": "सफलता दर"
+            },
+            gu: {
+                // Common
+                "Add New Transaction": "નવો વ્યવહાર ઉમેરો",
+                "Transaction Category": "વ્યવહાર શ્રેણી",
+                "Select Transaction Category": "વ્યવહાર શ્રેણી પસંદ કરો",
+                "Credit/Debit Card": "ક્રેડિટ/ડેબિટ કાર્ડ",
+                "Bank Transfer": "બેંક ટ્રાન્સફર",
+                "Cheque": "ચેક",
+                "Cash": "નાણાં",
+                "Transaction Amount": "વ્યવહાર રકમ",
+                "Transaction Date": "વ્યવહાર તારીખ",
+                "Description": "વર્ણન",
+                "Card Type": "કાર્ડ પ્રકાર",
+                "Card Number (Last 4 digits)": "કાર્ડ નંબર (છેલ્લા 4 અંક)",
+                "Merchant Name": "વેપારીનું નામ",
+                "Sender Account Number": "મોકલનારનો એકાઉન્ટ નંબર",
+                "Receiver Account Number": "પ્રાપ્તકર્તાનો એકાઉન્ટ નંબર",
+                "Bank Name": "બેંકનું નામ",
+                "Cheque Number": "ચેક નંબર",
+                "Account Number": "ખાતા નંબર",
+                "Transaction Location": "વ્યવહાર સ્થાન",
+                "Transaction Type": "વ્યવહાર પ્રકાર",
+                "Deposit": "ડિપોઝિટ",
+                "Withdrawal": "નિકાસ",
+                "Add Transaction": "વ્યવહાર ઉમેરો",
+                "Recent Activities": "તાજેતરની પ્રવૃત્તિઓ",
+                "Activity ID": "પ્રવૃત્તિ આઈડી",
+                "Activity Type": "પ્રવૃત્તિ પ્રકાર",
+                "Duration": "અવધિ",
+                "Date": "તારીખ",
+                "Status": "સ્થિતિ",
+                "Completed": "પૂર્ણ",
+                "In Progress": "પ્રગતિ પર",
+                "Account Balance": "ખાતા શેષ",
+                "Current Balance": "વર્તમાન શેષ",
+                "Total Transactions": "કુલ વ્યવહારો",
+                "Last 30 days": "છેલ્લા 30 દિવસ",
+                "Success Rate": "સફળતા દર"
+            }
+        };
+
+        function changeLanguage() {
+            const language = document.getElementById('languageSelect').value;
+            document.querySelectorAll('.translate').forEach(element => {
+                const key = element.getAttribute(`data-${language}`);
+                if (key) {
+                    element.textContent = key;
+                }
+            });
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            document.getElementById('languageSelect').value = savedLanguage;
+            changeLanguage();
+        });
+
+        // Save language preference
+        document.getElementById('languageSelect').addEventListener('change', (e) => {
+            localStorage.setItem('language', e.target.value);
+        });
+
+        document.getElementById('transactionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form fields
+            const transactionCategory = this.querySelector('#transactionCategory').value;
+            const amount = this.querySelector('input[name="amount"]').value;
+            const currency = this.querySelector('select[name="currency"]').value;
+            const paymentType = this.querySelector('select[name="paymentType"]').value;
+            const description = this.querySelector('textarea[name="description"]').value;
+            
+            // Validate all required fields
+            if (!transactionCategory || !amount || !currency || !paymentType || !description) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const formData = new FormData(this);
+            
+            // Add all form fields to formData
+            formData.append('transactionCategory', transactionCategory);
+            formData.append('amount', amount);
+            formData.append('currency', currency);
+            formData.append('paymentType', paymentType);
+            formData.append('description', description);
+
+            // Add bank transfer specific fields if selected
+            if (transactionCategory === 'bank') {
+                const senderAccount = this.querySelector('input[name="senderAccount"]').value;
+                const senderBankLocation = this.querySelector('select[name="senderBankLocation"]').value;
+                const receiverAccount = this.querySelector('input[name="receiverAccount"]').value;
+                const receiverBankLocation = this.querySelector('select[name="receiverBankLocation"]').value;
+                const receiverCurrency = this.querySelector('select[name="receiverCurrency"]').value;
+                const bankName = this.querySelector('input[name="bankName"]').value;
+
+                formData.append('senderAccount', senderAccount);
+                formData.append('senderBankLocation', senderBankLocation);
+                formData.append('receiverAccount', receiverAccount);
+                formData.append('receiverBankLocation', receiverBankLocation);
+                formData.append('receiverCurrency', receiverCurrency);
+                formData.append('bankName', bankName);
+            }
+
+            const transactionData = formatTransactionData(formData);
+            
+            try {
+                // Send data directly to Gemini
+                const geminiResponse = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(transactionData)
+                });
+
+                if (!geminiResponse.ok) {
+                    throw new Error('Error getting prediction from Gemini');
+                }
+
+                const predictionData = await geminiResponse.json();
+                console.log('Gemini Prediction:', predictionData);
+                
+                // Add prediction to transaction data
+                transactionData['Prediction'] = predictionData.prediction;
+                
+                showTransactionDialog(transactionData);
+            } catch (error) {
+                console.error('Error getting Gemini prediction:', error);
+                alert('Error getting prediction. Please try again.');
+            }
+        });
+
+        function formatTransactionData(formData) {
+            const now = new Date();
+            const startDate = new Date('2024-01-01'); // Assuming start date is January 1, 2024
+            const daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Get time in seconds since midnight
+            const timeInSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+            
+            // Format date components
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            // Get sender and receiver info based on transaction category
+            let senderInfo, receiverInfo;
+            if (formData.get('transactionCategory') === 'bank') {
+                senderInfo = `${formData.get('senderBankLocation')} - ${formData.get('currency')}`;
+                receiverInfo = `${formData.get('receiverBankLocation')} - ${formData.get('receiverCurrency')}`;
+            } else {
+                // For credit card transactions, use the same currency for both
+                senderInfo = `UK - ${formData.get('currency')}`;
+                receiverInfo = `UK - ${formData.get('currency')}`;
+            }
+            
+            // Get the selected payment type
+            const selectedPaymentType = formData.get('paymentType');
+            
+            // Initialize payment type flags (matching pandas one-hot encoding)
+            const paymentTypes = {
+                'Payment_type_Cash Withdrawal': false,
+                'Payment_type_Cheque': false,
+                'Payment_type_Credit card': false,
+                'Payment_type_Cross-border': false,
+                'Payment_type_Debit card': false
+            };
+            
+            // Set the selected payment type to true (matching pandas one-hot encoding)
+            switch(selectedPaymentType) {
+                case 'Cash Withdrawal':
+                    paymentTypes['Payment_type_Cash Withdrawal'] = true;
+                    break;
+                case 'Cheque':
+                    paymentTypes['Payment_type_Cheque'] = true;
+                    break;
+                case 'Credit card':
+                    paymentTypes['Payment_type_Credit card'] = true;
+                    break;
+                case 'Cross-border':
+                    paymentTypes['Payment_type_Cross-border'] = true;
+                    break;
+                case 'Debit card':
+                    paymentTypes['Payment_type_Debit card'] = true;
+                    break;
+                case 'Cash Deposit':
+                    // For Cash Deposit, all flags remain false (it's the reference category)
+                    break;
+            }
+
+            return {
+                'Time': timeInSeconds,
+                'Sender_account': formData.get('senderAccount') || 'N/A',
+                'Receiver_account': formData.get('receiverAccount') || 'N/A',
+                'Amount': formData.get('amount'),
+                'Days_Since_Start': daysSinceStart,
+                'Year': year,
+                'Month': month,
+                'Day': day,
+                ...paymentTypes,
+                'Sender_Info': senderInfo,
+                'Receiver_Info': receiverInfo
+            };
+        }
+
+        function showTransactionDialog(transactionData) {
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--card-background);
+                padding: 4rem;
+                border-radius: 25px;
+                box-shadow: 0 10px 20px var(--shadow-color);
+                z-index: 1000;
+                max-width: 80%;
+                max-height: 80vh;
+                overflow-y: auto;
+            `;
+
+            // Create a copy of transaction data to modify
+            const displayData = { ...transactionData };
+            
+            // Add encoded info section
+            const encodedInfo = {
+                'Original Sender Info': transactionData['Sender_Info'],
+                'Encoded Sender Info': transactionData['Sender_Info_Encoded'],
+                'Original Receiver Info': transactionData['Receiver_Info'],
+                'Encoded Receiver Info': transactionData['Receiver_Info_Encoded']
+            };
+
+            const content = document.createElement('div');
+            content.innerHTML = `
+                <h3 style="font-size: 3.2rem; margin-bottom: 3rem; color: var(--accent-color);">Transaction Details</h3>
+                <h4 style="font-size: 2.8rem; margin-bottom: 2rem; color: var(--accent-color);">Gemini Prediction</h4>
+                <pre style="font-size: 2.8rem; white-space: pre-wrap; color: var(--text-color);">${JSON.stringify(transactionData['Prediction'], null, 2)}</pre>
+                <h4 style="font-size: 2.8rem; margin-bottom: 2rem; color: var(--accent-color);">Encoded Information</h4>
+                <pre style="font-size: 2.8rem; white-space: pre-wrap; color: var(--text-color);">${JSON.stringify(encodedInfo, null, 2)}</pre>
+                <h4 style="font-size: 2.8rem; margin: 3rem 0 2rem; color: var(--accent-color);">Transaction Data</h4>
+                <pre style="font-size: 2.8rem; white-space: pre-wrap; color: var(--text-color);">${JSON.stringify(displayData, null, 2)}</pre>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    background: var(--accent-color);
+                    color: white;
+                    border: none;
+                    padding: 2rem 4rem;
+                    border-radius: 25px;
+                    font-size: 2.8rem;
+                    cursor: pointer;
+                    margin-top: 3rem;
+                ">Close</button>
+            `;
+
+            dialog.appendChild(content);
+            document.body.appendChild(dialog);
+
+            // Add overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            `;
+            overlay.onclick = () => {
+                dialog.remove();
+                overlay.remove();
+            };
+            document.body.appendChild(overlay);
+        }
+    </script>
+</body>
+</html> 
